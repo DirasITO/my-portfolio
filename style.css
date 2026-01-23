@@ -36,11 +36,6 @@ body {
   color: #888;
 }
 
-.counterdev {
-  font-weight: 700;
-  font-size: 14px;
-  color: #0ec8ce;
-}
 
 
 .header-card {
@@ -193,4 +188,11 @@ body {
     right: 16px;
   }
 }
+
+.counterdev {
+  font-weight: 700;
+  font-size: 14px;
+  color: #0ec8ce;
+}
+
 
