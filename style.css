@@ -36,6 +36,12 @@ body {
   color: #888;
 }
 
+.counterdev {
+  font-weight: 700;
+  font-size: 14px;
+  color: #0ec8ce;
+}
+
 
 .header-card {
   background: rgba(255, 255, 255, 0.92); /* translucent layer */
@@ -187,3 +193,4 @@ body {
     right: 16px;
   }
 }
+
