@@ -189,9 +189,8 @@ body {
   }
 }
 
-.counterdev {
+#visitorCount {
   font-weight: 700;
-  font-size: 14px;
   color: #0ec8ce;
 }
 
