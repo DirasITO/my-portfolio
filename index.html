@@ -22,7 +22,17 @@
             --text-muted: #9ca3af;
             --accent: #a3f32a; /* Lime green */
             --accent-hover: #bbff5c;
-            --accent-glow: rgba(163, 243, 42, 0.15);
+            --accent-glow: rgba(163, 243, 42, 0.25);
+            
+            /* Neomorphic Shadows */
+            --neo-light: rgba(35, 35, 35, 0.8);
+            --neo-dark: rgba(0, 0, 0, 0.9);
+        }
+
+        /* Smooth Rubber-band Scrolling */
+        html {
+            scroll-behavior: smooth;
+            overscroll-behavior-y: none;
         }
 
         body {
@@ -30,7 +40,8 @@
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            padding-top: 76px; /* Offset for fixed navbar */
+            padding-top: 76px;
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -43,11 +54,97 @@
         .accent-text { color: var(--accent); }
         .bg-accent { background-color: var(--accent); color: #000; }
 
+        /* --- Animated Vector Background --- */
+        .bg-vector-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: var(--bg-color);
+            pointer-events: none;
+        }
+
+        /* Glowing Neon Ribbon SVG */
+        .bg-svg-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+        }
+
+        .vector-line {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 1.5;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            filter: drop-shadow(0 0 8px var(--accent)) drop-shadow(0 0 20px rgba(163, 243, 42, 0.5));
+            animation: drawLine 15s linear infinite;
+        }
+
+        .vector-line-blue {
+            fill: none;
+            stroke: #2a75f3;
+            stroke-width: 1;
+            stroke-dasharray: 1500;
+            stroke-dashoffset: 1500;
+            filter: drop-shadow(0 0 8px #2a75f3);
+            animation: drawLine 18s linear infinite reverse;
+            opacity: 0.6;
+        }
+
+        .delay-1 { animation-delay: -5s; }
+        .delay-2 { animation-delay: -10s; }
+
+        @keyframes drawLine {
+            0% { stroke-dashoffset: 2000; }
+            50% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -2000; }
+        }
+
+        /* Floating Background Orbs */
+        .floating-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.25;
+            animation: floatOrb 12s infinite alternate ease-in-out;
+        }
+        .orb-lime {
+            background: var(--accent);
+            width: 50vw;
+            height: 50vw;
+            top: -15%;
+            right: -10%;
+        }
+        .orb-blue {
+            background: #2a75f3; 
+            width: 40vw;
+            height: 40vw;
+            bottom: -10%;
+            left: -10%;
+            animation-delay: -6s;
+            animation-duration: 14s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-40px, 40px) scale(1.1); }
+        }
+
+        /* --- UI Elements --- */
+        
         /* Navbar */
         .navbar {
-            background-color: rgba(10, 10, 10, 0.9) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
+            background-color: rgba(10, 10, 10, 0.8) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .navbar-brand .logo {
             color: var(--accent);
@@ -66,7 +163,7 @@
 
         /* Hero Section */
         .hero-section {
-            padding: 80px 0 60px;
+            padding: 100px 0 80px;
             text-align: center;
         }
         .hero-title {
@@ -82,21 +179,91 @@
             margin: 0 auto 30px;
         }
 
-        /* Base Card Style */
+        /* --- Neomorphic Cards (Lift Up on Hover) --- */
         .custom-card {
             background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 2rem;
-            transition: all 0.3s ease;
-        }
-        .custom-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 4px 20px var(--accent-glow);
-            transform: translateY(-4px);
+            border: none;
+            box-shadow: 
+                8px 8px 16px var(--neo-dark),
+                -8px -8px 16px var(--neo-light);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         
-        /* Project specific (needs equal height) */
+        .custom-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 
+                14px 14px 28px var(--neo-dark),
+                -14px -14px 28px var(--neo-light),
+                0 0 20px var(--accent-glow);
+        }
+
+        /* Section Headers */
+        .section-header { margin-bottom: 50px; text-align: center; }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 10px; }
+        .section-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* --- Custom Scroll Snap Slider --- */
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            padding: 0 5%; 
+        }
+        
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            gap: 2rem;
+            
+            /* FIX FOR HOVER CUTOFF: Add internal padding and offset it with negative margins */
+            padding: 40px 20px 60px 20px; 
+            margin: -40px -20px -60px -20px; 
+            
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
+
+        .scroll-item {
+            scroll-snap-align: center;
+            flex: 0 0 100%; 
+        }
+        
+        @media (min-width: 768px) {
+            .scroll-item { flex: 0 0 calc(50% - 1rem); } 
+        }
+        @media (min-width: 992px) {
+            .scroll-item { flex: 0 0 calc(33.333% - 1.33rem); } 
+        }
+
+        /* Slider Dots */
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 1rem;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 2px 2px 5px var(--neo-dark);
+        }
+        .dot:hover { background-color: var(--text-muted); }
+        .dot.active {
+            background-color: var(--accent);
+            width: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
         .project-card {
             height: 100%;
             display: flex;
@@ -111,35 +278,19 @@
         }
         .project-desc { flex-grow: 1; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;}
         
-        /* Enhanced CSS for Project Links */
         .project-link {
             color: var(--text-main);
-            text-decoration: underline;
-            text-decoration-color: var(--border-color);
-            text-underline-offset: 4px;
+            text-decoration: none;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             transition: all 0.2s;
         }
-        .project-link:hover { 
-            color: var(--accent); 
-            text-decoration-color: var(--accent);
-        }
-        .project-link::after {
-            content: '→';
-            margin-left: 8px;
-            transition: transform 0.2s;
-            text-decoration: none;
-        }
+        .project-link:hover { color: var(--accent); }
+        .project-link::after { content: '→'; margin-left: 8px; transition: transform 0.2s; }
         .project-link:hover::after { transform: translateX(4px); }
 
-        /* Section Headers */
-        .section-header { margin-bottom: 50px; text-align: center; }
-        .section-header h2 { font-size: 2.5rem; margin-bottom: 10px; }
-        .section-header p { color: var(--text-muted); font-size: 1.1rem; }
-
-        /* Buttons */
+        /* Standard Buttons */
         .btn-custom {
             background-color: var(--accent);
             color: #000;
@@ -168,10 +319,66 @@
             color: var(--accent);
         }
 
+        /* --- Modern Neomorphic Contact Section --- */
+        .contact-section {
+            position: relative;
+            padding: 100px 0;
+            overflow: hidden;
+        }
+
+        /* Neomorphic Card */
+        .neo-card {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 4rem 2rem;
+            box-shadow: 
+                -12px -12px 24px var(--neo-light),
+                16px 16px 32px var(--neo-dark);
+            border: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Neomorphic Button (Extruded / Lifts Up on Hover) */
+        .neo-btn {
+            background: var(--card-bg);
+            border-radius: 50px;
+            padding: 15px 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border: none;
+            box-shadow: 
+                6px 6px 12px var(--neo-dark),
+                -6px -6px 12px var(--neo-light);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .neo-btn:hover {
+            color: var(--accent);
+            transform: translateY(-8px); 
+            box-shadow: 
+                12px 12px 24px var(--neo-dark),
+                -12px -12px 24px var(--neo-light),
+                0 0 20px var(--accent-glow);
+        }
+
+        .neo-btn:active {
+            transform: translateY(0); 
+            box-shadow: 
+                inset 6px 6px 12px var(--neo-dark),
+                inset -6px -6px 12px var(--neo-light);
+        }
+
         /* Footer */
         .footer-custom {
             border-top: 1px solid var(--border-color);
-            background-color: #050505;
+            background-color: rgba(5, 5, 5, 0.9);
             padding: 40px 0 20px;
         }
         .footer-link {
@@ -190,30 +397,24 @@
             background: var(--accent);
             width: 0%;
             z-index: 9999;
+            box-shadow: 0 0 10px var(--accent);
         }
-
-        /* Scroll to top */
-        #scrollTopBtn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--accent);
-            color: #000;
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            display: none;
-            z-index: 1000;
-            transition: opacity 0.3s;
-        }
-        #scrollTopBtn:hover { background: var(--accent-hover); }
     </style>
 </head>
 <body>
+
+<!-- Animated Vector Background -->
+<div class="bg-vector-container">
+    <!-- Glowing Neon Vectors -->
+    <svg class="bg-svg-lines" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <path class="vector-line" d="M -100 200 C 200 200, 300 800, 600 800 S 800 200, 1100 200" />
+        <path class="vector-line-blue delay-1" d="M -100 400 C 300 400, 400 900, 700 900 S 900 400, 1100 400" />
+        <path class="vector-line delay-2" d="M -100 600 C 400 600, 500 1000, 800 1000 S 1000 600, 1100 600" />
+    </svg>
+    <!-- Blurred Glow Orbs -->
+    <div class="floating-orb orb-lime"></div>
+    <div class="floating-orb orb-blue"></div>
+</div>
 
 <!-- Scroll Progress Bar -->
 <div id="scroll-progress"></div>
@@ -233,6 +434,7 @@
         <li class="nav-item"><a class="nav-link" href="#work">Work</a></li>
         <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
         <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
       </ul>
     </div>
   </div>
@@ -247,7 +449,7 @@
     </p>
     <div class="d-flex justify-content-center gap-3 mt-4">
       <a href="#work" class="btn-custom text-decoration-none">View My Work</a>
-      <a href="mailto:achomsingh009@gmail.com" class="btn-outline-custom text-decoration-none">Contact Me</a>
+      <a href="#contact" class="btn-outline-custom text-decoration-none">Get In Touch</a>
     </div>
   </div>
 </header>
@@ -261,37 +463,37 @@
     </div>
     <div class="row g-4">
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5>Custom WordPress Themes</h5>
           <p class="text-muted mb-0">Building pixel-perfect themes from scratch using Advanced Custom Fields (ACF), PHP, and modern CSS. No bloated page builders.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5>WooCommerce Development</h5>
           <p class="text-muted mb-0">Customizing and optimizing WooCommerce stores for better user experience, secure checkout flows, and increased conversions.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5>Speed & Performance</h5>
           <p class="text-muted mb-0">Optimizing Core Web Vitals, implementing caching, image optimization, and database cleanup to ensure lightning-fast load times.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5>Theme & Plugin Customization</h5>
           <p class="text-muted mb-0">Modifying existing WordPress themes and extending plugin functionality to perfectly match your business requirements.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5>Security & Maintenance</h5>
           <p class="text-muted mb-0">Hardening WordPress installations, setting up automated backups, and performing routine updates to prevent vulnerabilities.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5>API Integrations</h5>
           <p class="text-muted mb-0">Connecting WordPress with third-party services, CRMs, and custom REST APIs to automate workflows and sync data seamlessly.</p>
         </div>
@@ -300,109 +502,145 @@
   </div>
 </section>
 
-<!-- Projects Section -->
+<!-- Projects Section (Scroll Snap Slider) -->
 <section class="py-5" id="work">
-  <div class="container">
-    <div class="section-header">
-      <!-- Added # to the heading here -->
+  <div class="container text-center mb-4">
+    <div class="section-header mb-0">
       <h2>Featured Work & Side Gigs #</h2>
-      <p>A selection of projects I've built and maintained</p>
+      <p>Swipe or scroll horizontally to view projects</p>
     </div>
+  </div>
     
-    <div class="row g-4">
-      <!-- Main Projects -->
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>Juboti Healthcare</h5>
-          <div class="project-tags">WordPress · Custom PHP · Security</div>
-          <p class="project-desc">Built a secure custom lab report download system enabling patients to access diagnostic reports online, significantly reducing manual admin effort.</p>
-          <a href="https://juboti.gt.tc" target="_blank" class="project-link">View Project</a>
+  <div class="slider-wrapper">
+      <!-- Native CSS Scroll Snap Container -->
+      <div class="scroll-container" id="projectSlider">
+        
+        <!-- Card 1 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>ATS Test Lab</h5>
+                <div class="project-tags">WordPress · Custom Layouts</div>
+                <p class="project-desc">Developed a professional testing laboratory website focusing on clear service presentation and easy navigation for clients.</p>
+                <a href="https://atstestlab.com/" target="_blank" class="project-link">View Project</a>
+            </div>
         </div>
-      </div>
 
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>India Health Card</h5>
-          <div class="project-tags">WordPress · SEO · Performance</div>
-          <p class="project-desc">Developed and optimized a healthcare discount platform enabling users to access affordable medical services across India.</p>
-          <a href="https://indiahealthcard.in" target="_blank" class="project-link">View Project</a>
+        <!-- Card 2 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>SML Auto Care</h5>
+                <div class="project-tags">WordPress · Landing Page</div>
+                <p class="project-desc">Created a dedicated landing page for wheel alignment services, focusing on local SEO and driving service bookings.</p>
+                <a href="https://smlautocare.in/wheel-alignment-ad/" target="_blank" class="project-link">View Project</a>
+            </div>
         </div>
-      </div>
 
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>Medilane Eye Care</h5>
-          <div class="project-tags">WordPress · Landing Page · UI</div>
-          <p class="project-desc">Designed a conversion-focused franchise landing page to attract entrepreneurs, clearly presenting the business model and investment details.</p>
-          <a href="https://medilane.in/eyecarefranchise/" target="_blank" class="project-link">View Project</a>
+        <!-- Card 3 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>Rudra Home Care</h5>
+                <div class="project-tags">WordPress · Business Website</div>
+                <p class="project-desc">Built a clean, trustworthy website for home healthcare services, highlighting their range of medical support options.</p>
+                <a href="https://rudrahomecare.com" target="_blank" class="project-link">View Project</a>
+            </div>
         </div>
+
+        <!-- Card 4 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>Gunasekar Advocate</h5>
+                <div class="project-tags">WordPress · Professional Profile</div>
+                <p class="project-desc">Designed a professional legal portfolio site, establishing a strong digital presence and making it easy for clients to get in touch.</p>
+                <a href="https://gunasekaradvocate.com/" target="_blank" class="project-link">View Project</a>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>Fastcare Laundry</h5>
+                <div class="project-tags">WordPress · Service Page</div>
+                <p class="project-desc">Developed a specialized service page for curtain cleaning, optimizing the layout for user engagement and clear service details.</p>
+                <a href="https://fastcarelaundry.ae/curtain-cleaning-service/" target="_blank" class="project-link">View Project</a>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>Star Washing Machine</h5>
+                <div class="project-tags">WordPress · Local SEO</div>
+                <p class="project-desc">Built a high-converting website for appliance repair services, focusing on quick load times and mobile responsiveness.</p>
+                <a href="https://starwashingmachine.in/" target="_blank" class="project-link">View Project</a>
+            </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>GoTo Gifting</h5>
+                <div class="project-tags">WordPress · E-Commerce · UI</div>
+                <p class="project-desc">Developed a modern e-commerce platform for corporate and personalized gifting, focusing on a seamless user experience and smooth checkout flow.</p>
+                <a href="https://gotogifting.com/" target="_blank" class="project-link">View Project</a>
+            </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>The Apostille</h5>
+                <div class="project-tags">WordPress · Corporate · SEO</div>
+                <p class="project-desc">Built a professional corporate website for apostille and documentation services, designed to build trust and generate high-quality B2B leads.</p>
+                <a href="https://theapostille.in/" target="_blank" class="project-link">View Project</a>
+            </div>
+        </div>
+
+        <!-- Card 9 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>Juboti Healthcare</h5>
+                <div class="project-tags">WordPress · Custom PHP · Security</div>
+                <p class="project-desc">Built a secure custom lab report download system enabling patients to access diagnostic reports online, significantly reducing manual admin effort.</p>
+                <a href="https://juboti.gt.tc" target="_blank" class="project-link">View Project</a>
+            </div>
+        </div>
+
+        <!-- Card 10 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>India Health Card</h5>
+                <div class="project-tags">WordPress · SEO · Performance</div>
+                <p class="project-desc">Developed and optimized a healthcare discount platform enabling users to access affordable medical services across India.</p>
+                <a href="https://indiahealthcard.in" target="_blank" class="project-link">View Project</a>
+            </div>
+        </div>
+
+        <!-- Card 11 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>Medilane Eye Care</h5>
+                <div class="project-tags">WordPress · Landing Page · UI</div>
+                <p class="project-desc">Designed a conversion-focused franchise landing page to attract entrepreneurs, clearly presenting the business model and investment details.</p>
+                <a href="https://medilane.in/eyecarefranchise/" target="_blank" class="project-link">View Project</a>
+            </div>
+        </div>
+
+        <!-- Card 12 -->
+        <div class="scroll-item">
+            <div class="custom-card project-card">
+                <h5>URDS Organization</h5>
+                <div class="project-tags">WordPress · UI Design · Content Structure</div>
+                <p class="project-desc">Developed an informational website to showcase mission, programs, and social impact, helping strengthen digital outreach and community engagement.</p>
+                <a href="https://urdsorg.in/" target="_blank" class="project-link">View Project</a>
+            </div>
+        </div>
+
       </div>
       
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>URDS Organization</h5>
-          <div class="project-tags">WordPress · UI Design · Content Structure</div>
-          <p class="project-desc">Developed an informational website to showcase mission, programs, and social impact, helping strengthen digital outreach and community engagement.</p>
-          <a href="https://urdsorg.in/" target="_blank" class="project-link">View Project</a>
-        </div>
+      <!-- Slider Dots -->
+      <div class="slider-dots" id="sliderDots">
+          <!-- Dots generated by JS -->
       </div>
-
-      <!-- Side Gigs -->
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>ATS Test Lab</h5>
-          <div class="project-tags">WordPress · Custom Layouts</div>
-          <p class="project-desc">Developed a professional testing laboratory website focusing on clear service presentation and easy navigation for clients.</p>
-          <a href="https://atstestlab.com/" target="_blank" class="project-link">View Project</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>SML Auto Care</h5>
-          <div class="project-tags">WordPress · Landing Page</div>
-          <p class="project-desc">Created a dedicated landing page for wheel alignment services, focusing on local SEO and driving service bookings.</p>
-          <a href="https://smlautocare.in/wheel-alignment-ad/" target="_blank" class="project-link">View Project</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>Rudra Home Care</h5>
-          <div class="project-tags">WordPress · Business Website</div>
-          <p class="project-desc">Built a clean, trustworthy website for home healthcare services, highlighting their range of medical support options.</p>
-          <a href="https://rudrahomecare.com" target="_blank" class="project-link">View Project</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>Gunasekar Advocate</h5>
-          <div class="project-tags">WordPress · Professional Profile</div>
-          <p class="project-desc">Designed a professional legal portfolio site, establishing a strong digital presence and making it easy for clients to get in touch.</p>
-          <a href="https://gunasekaradvocate.com/" target="_blank" class="project-link">View Project</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>Fastcare Laundry</h5>
-          <div class="project-tags">WordPress · Service Page</div>
-          <p class="project-desc">Developed a specialized service page for curtain cleaning, optimizing the layout for user engagement and clear service details.</p>
-          <a href="https://fastcarelaundry.ae/curtain-cleaning-service/" target="_blank" class="project-link">View Project</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="custom-card project-card">
-          <h5>Star Washing Machine</h5>
-          <div class="project-tags">WordPress · Local SEO</div>
-          <p class="project-desc">Built a high-converting website for appliance repair services, focusing on quick load times and mobile responsiveness.</p>
-          <a href="https://starwashingmachine.in/" target="_blank" class="project-link">View Project</a>
-        </div>
-      </div>
-
-    </div>
   </div>
 </section>
 
@@ -415,39 +653,39 @@
     </div>
     <div class="row g-4">
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5 class="accent-text">WordPress Core</h5>
           <p class="text-muted mb-0">Custom Theme Development, ACF, WooCommerce, Hooks & Filters, REST API, WordPress VIP Standards</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5 class="accent-text">Frontend</h5>
           <p class="text-muted mb-0">HTML5, CSS3, JavaScript, jQuery, Bootstrap, Responsive Design</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5 class="accent-text">Backend & Databases</h5>
           <p class="text-muted mb-0">PHP, MySQL, Node.js (Basic)</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5 class="accent-text">Tools & Workflow</h5>
           <p class="text-muted mb-0">Git, GitHub, Figma, VS Code, LocalWP</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
+        <div class="custom-card h-100">
           <h5 class="accent-text">Performance & SEO</h5>
           <p class="text-muted mb-0">Core Web Vitals, Caching (WP Rocket), Image Optimization, Technical SEO</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="custom-card">
-          <h5 class="accent-text">AI Productivity</h5>
-          <p class="text-muted mb-0">AI-Assisted Coding (GitHub Copilot), Workflow Automation</p>
+        <div class="custom-card h-100">
+          <h5 class="accent-text">Modern AI-Assisted Coding</h5>
+          <p class="text-muted mb-0">Leveraging AI tools (GitHub Copilot, ChatGPT) for rapid prototyping, intelligent code refactoring, and modernizing development workflows to ship features faster.</p>
         </div>
       </div>
     </div>
@@ -464,7 +702,6 @@
     <div class="row justify-content-center">
       <div class="col-lg-10">
         
-        <!-- New 2026 Role Added Here -->
         <div class="custom-card mb-4">
           <div class="d-flex justify-content-between align-items-start flex-wrap">
             <div>
@@ -559,20 +796,42 @@
   </div>
 </section>
 
-<!-- CTA Section -->
-<section class="py-5 mb-5">
-  <div class="container">
-    <div class="custom-card text-center py-5" style="border-color: var(--accent);">
-      <h2 class="mb-3">Let’s Build Something Great</h2>
-      <p class="text-muted mb-4 mx-auto" style="max-width: 600px;">
-        Interested in working together or discussing a project? I’m open to freelance, full-time, and contract opportunities.
-      </p>
-      <div class="d-flex justify-content-center flex-wrap gap-3">
-        <a href="mailto:achomsingh009@gmail.com" class="btn-custom text-decoration-none">Email Me</a>
-        <a href="./assests/DheerajAchomResume.pdf" target="_blank" class="btn-outline-custom text-decoration-none">View Resume</a>
-      </div>
+<!-- Modern Neomorphic Contact Section -->
+<section class="contact-section" id="contact">
+    <div class="container position-relative z-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="neo-card">
+                    <h2 class="mb-3">Let's Build Something Great</h2>
+                    <p class="text-muted mb-5 mx-auto" style="max-width: 500px;">
+                        Open for freelance, full-time, and contract opportunities. Drop me a line and let's talk about your next project.
+                    </p>
+                    
+                    <h3 class="mb-4 accent-text" style="font-size: 2rem;">Dheeraj Achom</h3>
+                    
+                    <!-- Neomorphic Extruded Email Box -->
+                    <div class="mb-5">
+                        <a href="mailto:achomsingh009@gmail.com" class="neo-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-at" viewBox="0 0 16 16">
+                              <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/>
+                              <path d="M14.247 14.269c1.01 0 1.913-.423 2.463-1.093.6-.59 1.02-1.42 1.02-2.405a.5.5 0 0 0-1 0c0 .788-.32 1.423-.728 1.833-.422.424-1.05.665-1.755.665-1.4 0-2.5-1.163-2.5-2.625 0-1.463 1.1-2.625 2.5-2.625.708 0 1.346.246 1.767.658.403.395.708 1.007.708 1.65a.5.5 0 0 0 1 0c0-1.002-.468-1.915-1.128-2.555-.67-.65-1.57-1.05-2.347-1.05-1.98 0-3.5 1.63-3.5 3.625 0 1.994 1.52 3.625 3.5 3.625z"/>
+                            </svg>
+                            achomsingh009@gmail.com
+                        </a>
+                    </div>
+
+                    <div class="d-flex justify-content-center flex-wrap gap-4">
+                        <a href="mailto:achomsingh009@gmail.com" class="neo-btn">
+                            Send an Email
+                        </a>
+                        <a href="./assests/DheerajAchomResume.pdf" target="_blank" class="neo-btn">
+                            View Resume
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
 <!-- Footer -->
@@ -592,9 +851,6 @@
   </div>
 </footer>
 
-<!-- Scroll to top button -->
-<button id="scrollTopBtn" aria-label="Scroll to top">↑</button>
-
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
@@ -609,27 +865,13 @@ fetch('https://api.countapi.xyz/hit/dirasito.github.io/my-portfolio')
     document.getElementById('visitorCount').innerText = '—';
   });
 
-// Scroll progress & Top button
+// Scroll progress
 const progressBar = document.getElementById('scroll-progress');
-const scrollTopBtn = document.getElementById('scrollTopBtn');
-
 window.onscroll = function() {
-    // Progress bar
     let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     let scrolled = (winScroll / height) * 100;
     progressBar.style.width = scrolled + "%";
-
-    // Top button
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        scrollTopBtn.style.display = "block";
-    } else {
-        scrollTopBtn.style.display = "none";
-    }
-};
-
-scrollTopBtn.onclick = function() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 // Navbar active link highlighting
@@ -650,6 +892,52 @@ window.addEventListener("scroll", () => {
         if (link.getAttribute("href").includes(current)) {
             link.classList.add("active");
         }
+    });
+});
+
+// --- Accurate Slider Dots Logic ---
+document.addEventListener("DOMContentLoaded", function() {
+    const slider = document.getElementById('projectSlider');
+    const dotsContainer = document.getElementById('sliderDots');
+    const items = slider.querySelectorAll('.scroll-item');
+    
+    // 1. Create a dot for every single project card
+    items.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (index === 0) dot.classList.add('active');
+        
+        // Click event to scroll to specific card
+        dot.addEventListener('click', () => {
+            const itemWidth = items[0].offsetWidth;
+            const gap = 32; // Matches 2rem gap
+            // Scroll horizontally
+            slider.scrollTo({
+                left: index * (itemWidth + gap),
+                behavior: 'smooth'
+            });
+        });
+        
+        dotsContainer.appendChild(dot);
+    });
+
+    // 2. Update active dot when user swipes/scrolls manually
+    slider.addEventListener('scroll', () => {
+        const itemWidth = items[0].offsetWidth;
+        const gap = 32;
+        const scrollLeft = slider.scrollLeft;
+        
+        // Calculate which card is currently mostly in view
+        const activeIndex = Math.round(scrollLeft / (itemWidth + gap));
+        
+        const dots = dotsContainer.querySelectorAll('.dot');
+        dots.forEach((dot, index) => {
+            if (index === activeIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
     });
 });
 </script>
