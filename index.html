@@ -3,174 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <title>WordPress Developer | Dheeraj Achom</title>
     
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #141414;
+            --border-color: #2a2a2a;
+            --text-main: #f5f5f5;
+            --text-muted: #9ca3af;
+            --accent: #a3f32a; /* Lime green */
+            --accent-hover: #bbff5c;
+            --accent-glow: rgba(163, 243, 42, 0.15);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding-top: 76px; /* Offset for fixed navbar */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .text-muted { color: var(--text-muted) !important; }
+        .accent-text { color: var(--accent); }
+        .bg-accent { background-color: var(--accent); color: #000; }
+
+        /* Navbar */
+        .navbar {
+            background-color: rgba(10, 10, 10, 0.9) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .navbar-brand .logo {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .nav-link {
+            color: var(--text-main) !important;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent) !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* Base Card Style */
+        .custom-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        .custom-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px var(--accent-glow);
+            transform: translateY(-4px);
+        }
+        
+        /* Project specific (needs equal height) */
+        .project-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card h5 { margin-bottom: 10px; font-size: 1.2rem; }
+        .project-tags {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .project-desc { flex-grow: 1; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;}
+        
+        /* Enhanced CSS for Project Links */
+        .project-link {
+            color: var(--text-main);
+            text-decoration: underline;
+            text-decoration-color: var(--border-color);
+            text-underline-offset: 4px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        .project-link:hover { 
+            color: var(--accent); 
+            text-decoration-color: var(--accent);
+        }
+        .project-link::after {
+            content: '→';
+            margin-left: 8px;
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+        .project-link:hover::after { transform: translateX(4px); }
+
+        /* Section Headers */
+        .section-header { margin-bottom: 50px; text-align: center; }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 10px; }
+        .section-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* Buttons */
+        .btn-custom {
+            background-color: var(--accent);
+            color: #000;
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-custom:hover {
+            background-color: var(--accent-hover);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        .btn-outline-custom {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .btn-outline-custom:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Footer */
+        .footer-custom {
+            border-top: 1px solid var(--border-color);
+            background-color: #050505;
+            padding: 40px 0 20px;
+        }
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-link:hover { color: var(--accent); }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            width: 0%;
+            z-index: 9999;
+        }
+
+        /* Scroll to top */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+        #scrollTopBtn:hover { background: var(--accent-hover); }
+    </style>
 </head>
 <body>
- <nav  class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+
+<!-- Scroll Progress Bar -->
+<div id="scroll-progress"></div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg fixed-top">
   <div class="container">
-    
-    <!-- Logo -->
-    <a class="navbar-brand" href="./index.html">
-  <span class="logo">DA</span>
-  <span class="brand-text">
-    Dheeraj Achom
-    <small class="designation">Web Developer</small>
-  </span>
-</a>
-
-    <!-- Toggle button -->
+    <a class="navbar-brand" href="#">
+      <span class="logo">DA.</span>
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
     </button>
-
-    <!-- Menu -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="./index.html">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#009">Work</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link me-3" href="#008">Info</a>
-        </li>
+      <ul class="navbar-nav ms-auto gap-3">
+        <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#work">Work</a></li>
+        <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
       </ul>
-    </div> 
+    </div>
+  </div>
 </nav>
 
-
-
-<header class="py-4 py-md-5">
+<!-- Hero Section -->
+<header class="hero-section" id="home">
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-12 col-lg-10">
-
-        <div class="row align-items-center header-card p-3 p-md-5">
-
-          <!-- Photo -->
-          <div class="col-12 col-md-4 text-center mb-4 mb-md-0">
-            <img src="./assests/profile.jpg"
-                 class="rounded-circle img-fluid"
-                 style="max-width: 200px;"
-                 alt="Dheeraj Achom">
-          </div>
-
-          <!-- Text -->
-          <div class="col-12 col-md-8">
-            <h1 class="fw-bold text-dark">Hi, I’m Dheeraj Achom</h1>
-            <h2 class="h6 text-muted mb-3">Web Developer & Digital Marketer</h2>
-
-            <p class="text-secondary mb-3">
-              I build clean, fast, and scalable websites with modern tools
-              and performance-driven design.
-            </p>
-
-<hr class="w-25">
-
-<div class="d-inline-flex align-items-center gap-2">
-  <a href="mailto:achomsingh009@gmail.com"
-     class="text-decoration-none fw-medium text-dark text-break">
-    achomsingh009@gmail.com
-  </a>
-
-  <span class="text-muted">|</span>
-
-  <a href="https://github.com/DirasITO"
-     target="_blank"
-     class="text-decoration-none fw-medium text-dark">
-    GitHub
-  </a>
-</div>
-
-
-          </div>
-
-        </div>
-
-      </div>
+    <h1 class="hero-title">Crafting Fast, Secure &<br><span class="accent-text">Scalable</span> WordPress Sites.</h1>
+    <p class="hero-subtitle">
+      I specialize in custom theme development, performance optimization, and complex CMS architectures—turning your vision into a high-performing digital experience without the bloat.
+    </p>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <a href="#work" class="btn-custom text-decoration-none">View My Work</a>
+      <a href="mailto:achomsingh009@gmail.com" class="btn-outline-custom text-decoration-none">Contact Me</a>
     </div>
   </div>
 </header>
 
-
-
-
-<section class="py-5">
+<!-- Services Section -->
+<section class="py-5" id="services">
   <div class="container">
-
-    <!-- Section title -->
-    <div class="text-center mb-5" id="009">
-      <h2 class="fw-bold">What I Do</h2>
-      <p class="text-muted">Services I offer to build and grow digital products</p>
+    <div class="section-header">
+      <h2>What I Do</h2>
+      <p>Expert WordPress development services</p>
     </div>
-
     <div class="row g-4">
-
-      <!-- Card 1 -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">WordPress & Custom Development</h5>
-          <p class="text-muted mb-0">
-            Custom WordPress themes, dynamic websites, and scalable solutions
-            tailored to business needs.
-          </p>
+        <div class="custom-card">
+          <h5>Custom WordPress Themes</h5>
+          <p class="text-muted mb-0">Building pixel-perfect themes from scratch using Advanced Custom Fields (ACF), PHP, and modern CSS. No bloated page builders.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card">
+          <h5>WooCommerce Development</h5>
+          <p class="text-muted mb-0">Customizing and optimizing WooCommerce stores for better user experience, secure checkout flows, and increased conversions.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card">
+          <h5>Speed & Performance</h5>
+          <p class="text-muted mb-0">Optimizing Core Web Vitals, implementing caching, image optimization, and database cleanup to ensure lightning-fast load times.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card">
+          <h5>Theme & Plugin Customization</h5>
+          <p class="text-muted mb-0">Modifying existing WordPress themes and extending plugin functionality to perfectly match your business requirements.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card">
+          <h5>Security & Maintenance</h5>
+          <p class="text-muted mb-0">Hardening WordPress installations, setting up automated backups, and performing routine updates to prevent vulnerabilities.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card">
+          <h5>API Integrations</h5>
+          <p class="text-muted mb-0">Connecting WordPress with third-party services, CRMs, and custom REST APIs to automate workflows and sync data seamlessly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section class="py-5" id="work">
+  <div class="container">
+    <div class="section-header">
+      <!-- Added # to the heading here -->
+      <h2>Featured Work & Side Gigs #</h2>
+      <p>A selection of projects I've built and maintained</p>
+    </div>
+    
+    <div class="row g-4">
+      <!-- Main Projects -->
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card project-card">
+          <h5>Juboti Healthcare</h5>
+          <div class="project-tags">WordPress · Custom PHP · Security</div>
+          <p class="project-desc">Built a secure custom lab report download system enabling patients to access diagnostic reports online, significantly reducing manual admin effort.</p>
+          <a href="https://juboti.gt.tc" target="_blank" class="project-link">View Project</a>
         </div>
       </div>
 
-      <!-- Card 2 -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">Responsive UI & Performance</h5>
-          <p class="text-muted mb-0">
-            Mobile-first interfaces, fast load times, and optimized user
-            experience across devices.
-          </p>
+        <div class="custom-card project-card">
+          <h5>India Health Card</h5>
+          <div class="project-tags">WordPress · SEO · Performance</div>
+          <p class="project-desc">Developed and optimized a healthcare discount platform enabling users to access affordable medical services across India.</p>
+          <a href="https://indiahealthcard.in" target="_blank" class="project-link">View Project</a>
         </div>
       </div>
 
-      <!-- Card 3 -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">SEO & Conversion Optimization</h5>
-          <p class="text-muted mb-0">
-            SEO-friendly builds focused on visibility, engagement, and lead
-            generation.
-          </p>
+        <div class="custom-card project-card">
+          <h5>Medilane Eye Care</h5>
+          <div class="project-tags">WordPress · Landing Page · UI</div>
+          <p class="project-desc">Designed a conversion-focused franchise landing page to attract entrepreneurs, clearly presenting the business model and investment details.</p>
+          <a href="https://medilane.in/eyecarefranchise/" target="_blank" class="project-link">View Project</a>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card project-card">
+          <h5>URDS Organization</h5>
+          <div class="project-tags">WordPress · UI Design · Content Structure</div>
+          <p class="project-desc">Developed an informational website to showcase mission, programs, and social impact, helping strengthen digital outreach and community engagement.</p>
+          <a href="https://urdsorg.in/" target="_blank" class="project-link">View Project</a>
         </div>
       </div>
 
-      <!-- Card 4 -->
+      <!-- Side Gigs -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">Meta & Google Ads Campaigns</h5>
-          <p class="text-muted mb-0">
-            Performance-driven ad campaigns optimized for CTR, CPA, and ROAS.
-          </p>
+        <div class="custom-card project-card">
+          <h5>ATS Test Lab</h5>
+          <div class="project-tags">WordPress · Custom Layouts</div>
+          <p class="project-desc">Developed a professional testing laboratory website focusing on clear service presentation and easy navigation for clients.</p>
+          <a href="https://atstestlab.com/" target="_blank" class="project-link">View Project</a>
         </div>
       </div>
 
-      <!-- Card 5 -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">Wireframing & UI Planning</h5>
-          <p class="text-muted mb-0">
-            Clear wireframes and layouts to map user journeys before development.
-          </p>
+        <div class="custom-card project-card">
+          <h5>SML Auto Care</h5>
+          <div class="project-tags">WordPress · Landing Page</div>
+          <p class="project-desc">Created a dedicated landing page for wheel alignment services, focusing on local SEO and driving service bookings.</p>
+          <a href="https://smlautocare.in/wheel-alignment-ad/" target="_blank" class="project-link">View Project</a>
         </div>
       </div>
 
-      <!-- Card 6 -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">AI-Assisted Coding</h5>
-          <p class="text-muted mb-0">
-            Faster development using AI tools while maintaining clean,
-            maintainable code.
-          </p>
+        <div class="custom-card project-card">
+          <h5>Rudra Home Care</h5>
+          <div class="project-tags">WordPress · Business Website</div>
+          <p class="project-desc">Built a clean, trustworthy website for home healthcare services, highlighting their range of medical support options.</p>
+          <a href="https://rudrahomecare.com" target="_blank" class="project-link">View Project</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card project-card">
+          <h5>Gunasekar Advocate</h5>
+          <div class="project-tags">WordPress · Professional Profile</div>
+          <p class="project-desc">Designed a professional legal portfolio site, establishing a strong digital presence and making it easy for clients to get in touch.</p>
+          <a href="https://gunasekaradvocate.com/" target="_blank" class="project-link">View Project</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card project-card">
+          <h5>Fastcare Laundry</h5>
+          <div class="project-tags">WordPress · Service Page</div>
+          <p class="project-desc">Developed a specialized service page for curtain cleaning, optimizing the layout for user engagement and clear service details.</p>
+          <a href="https://fastcarelaundry.ae/curtain-cleaning-service/" target="_blank" class="project-link">View Project</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="custom-card project-card">
+          <h5>Star Washing Machine</h5>
+          <div class="project-tags">WordPress · Local SEO</div>
+          <p class="project-desc">Built a high-converting website for appliance repair services, focusing on quick load times and mobile responsiveness.</p>
+          <a href="https://starwashingmachine.in/" target="_blank" class="project-link">View Project</a>
         </div>
       </div>
 
@@ -178,425 +406,200 @@
   </div>
 </section>
 
-
-<!-- projects-->
- <section class="py-5">
+<!-- Skills Section -->
+<section class="py-5" id="skills">
   <div class="container">
-
-    <!-- Section heading -->
-    <div class="mb-5 text-center">
-      <h2 class="fw-bold">Featured Work</h2>
-      <p class="text-muted">Selected projects showcasing real-world impact</p>
+    <div class="section-header">
+      <h2>Technical Skills</h2>
+      <p>The tools and technologies I use daily</p>
     </div>
-
     <div class="row g-4">
-
-      <!-- Project 1 -->
-      <div class="col-md-6">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">Juboti Healthcare – Online Lab Report System</h5>
-          <p class="text-muted small mb-2">
-            WordPress · Custom PHP · Security · UX
-          </p>
-          <p class="text-secondary">
-            Built a custom lab report download system enabling patients to securely
-            access and download diagnostic reports online, reducing manual effort
-            and improving patient convenience.
-          </p>
-          <a href="https://juboti.gt.tc" target="_blank"
-             class="fw-medium text-decoration-none">
-            View Project →
-          </a>
-        </div>
-      </div>
-
-      <!-- Project 2 -->
-      <div class="col-md-6">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">URDS Organization – Social Development Platform</h5>
-          <p class="text-muted small mb-2">
-            WordPress · UI Design · Content Structure
-          </p>
-          <p class="text-secondary">
-            Developed an informational website to showcase mission, programs,
-            and social impact, helping strengthen digital outreach and community
-            engagement.
-          </p>
-          <a href="https://urdsorg.in/" target="_blank"
-             class="fw-medium text-decoration-none">
-            View Project →
-          </a>
-        </div>
-      </div>
-
-      <!-- Project 3 -->
-      <div class="col-md-6">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">Medilane Eye Care Franchise – Lead Generation</h5>
-          <p class="text-muted small mb-2">
-            WordPress · Landing Page · SEO · Conversion
-          </p>
-          <p class="text-secondary">
-            Designed a conversion-focused franchise landing page to attract
-            entrepreneurs, clearly presenting business model, benefits,
-            and investment details.
-          </p>
-          <a href="https://medilane.in/eyecarefranchise/" target="_blank"
-             class="fw-medium text-decoration-none">
-            View Project →
-          </a>
-        </div>
-      </div>
-
-      <!-- Project 4 -->
-      <div class="col-md-6">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">India Health Card – Healthcare Savings Platform</h5>
-          <p class="text-muted small mb-2">
-            WordPress · SEO · Performance · UX
-          </p>
-          <p class="text-secondary">
-            Built and optimized a healthcare discount platform enabling users
-            to access affordable medical and wellness services across India.
-          </p>
-          <a href="https://indiahealthcard.in" target="_blank"
-             class="fw-medium text-decoration-none">
-            View Project →
-          </a>
-        </div>
-      </div>
-      <!-- Project 5 -->
-<div class="col-md-6">
-  <div class="service-card h-100">
-    <h5 class="fw-semibold">Google Ads – Lead Generation Campaigns</h5>
-    <p class="text-muted small mb-2">
-      Google Ads · Search · Conversion Tracking · GA4
-    </p>
-    <p class="text-secondary">
-      Planned, executed, and optimized Google Search ad campaigns focused on
-      lead generation. Handled keyword research, ad copy, conversion tracking,
-      and ongoing performance optimization to improve lead quality.
-    </p>
-      <a href="./case-studies/google-ads.html"
-     class="fw-medium text-decoration-none">
-    View Case Study →
-  </a>
-
-  </div>
-</div>
-
-
-<!-- Project 6 -->
-<div class="col-md-6">
-  <div class="service-card h-100">
-    <h5 class="fw-semibold">Meta Ads – Awareness & Lead Campaigns</h5>
-    <p class="text-muted small mb-2">
-      Meta Ads · Facebook · Instagram · Audience Targeting
-    </p>
-    <p class="text-secondary">
-      Managed Meta (Facebook & Instagram) ad campaigns including audience
-      targeting, creative testing, and budget optimization to drive engagement
-      and leads for healthcare and service-based businesses.
-    </p>
-     <a href="./case-studies/google-ads.html"
-     class="fw-medium text-decoration-none">
-    View Case Study →
-  </a>
-
-  </div>
-</div>
-
-
-    </div>
-  </div>
-  
-</section>
-
-<!-- skill set-->
-
-<section class="py-5">
-  <div class="container">
-
-    <!-- Section title -->
-    <div class="text-center mb-5">
-      <h2 class="fw-bold">Skills</h2>
-      <p class="text-muted">Tools and technologies I work with</p>
-    </div>
-
-    <div class="row g-4">
-
-      <!-- Frontend -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">Frontend</h5>
-          <p class="text-secondary mb-0">
-            HTML, CSS, JavaScript, Bootstrap, jQuery, DOM, React.js
-          </p>
+        <div class="custom-card">
+          <h5 class="accent-text">WordPress Core</h5>
+          <p class="text-muted mb-0">Custom Theme Development, ACF, WooCommerce, Hooks & Filters, REST API, WordPress VIP Standards</p>
         </div>
       </div>
-
-      <!-- CMS & E-Commerce -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">CMS & E-Commerce</h5>
-          <p class="text-secondary mb-0">
-            WordPress, WooCommerce, Shopify, ACF
-          </p>
+        <div class="custom-card">
+          <h5 class="accent-text">Frontend</h5>
+          <p class="text-muted mb-0">HTML5, CSS3, JavaScript, jQuery, Bootstrap, Responsive Design</p>
         </div>
       </div>
-
-      <!-- Digital Marketing -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">Digital Marketing</h5>
-          <p class="text-secondary mb-0">
-            Google Ads, Meta Ads, Paid Campaigns, Conversion Optimization
-          </p>
+        <div class="custom-card">
+          <h5 class="accent-text">Backend & Databases</h5>
+          <p class="text-muted mb-0">PHP, MySQL, Node.js (Basic)</p>
         </div>
       </div>
-
-      <!-- Design & Planning -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">Design & Planning</h5>
-          <p class="text-secondary mb-0">
-            Web Designing, Wireframing, Figma
-          </p>
+        <div class="custom-card">
+          <h5 class="accent-text">Tools & Workflow</h5>
+          <p class="text-muted mb-0">Git, GitHub, Figma, VS Code, LocalWP</p>
         </div>
       </div>
-
-      <!-- Backend & Tools -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">Backend & Tools</h5>
-          <p class="text-secondary mb-0">
-            Node.js, Git, GA4
-          </p>
+        <div class="custom-card">
+          <h5 class="accent-text">Performance & SEO</h5>
+          <p class="text-muted mb-0">Core Web Vitals, Caching (WP Rocket), Image Optimization, Technical SEO</p>
         </div>
       </div>
-
-      <!-- AI & Productivity -->
       <div class="col-md-6 col-lg-4">
-        <div class="service-card h-100">
-          <h5 class="fw-semibold">AI & Productivity</h5>
-          <p class="text-secondary mb-0">
-            AI-assisted Coding, Automation Tools
-          </p>
+        <div class="custom-card">
+          <h5 class="accent-text">AI Productivity</h5>
+          <p class="text-muted mb-0">AI-Assisted Coding (GitHub Copilot), Workflow Automation</p>
         </div>
       </div>
-
     </div>
   </div>
 </section>
- <!--work with -->
 
- <section class="py-5">
+<!-- Experience Section -->
+<section class="py-5" id="experience">
   <div class="container">
-
-    <!-- Section heading -->
-    <div class="text-center mb-5">
-      <h2 class="fw-bold">Experience</h2>
-      <p class="text-muted">Roles and responsibilities across technology & marketing</p>
+    <div class="section-header">
+      <h2>Experience</h2>
+      <p>My professional journey</p>
     </div>
-
-    <div class="row g-4">
-
-      <!-- Experience 1 -->
-      <div class="col-12">
-        <div class="service-card">
-          <h5 class="fw-semibold mb-1">IT Manager</h5>
-          <p class="text-muted small mb-2">
-            Medilane HealthTech & Consultancy Services Pvt Ltd · Full-time  
-            <br>Jan 2020 – Oct 2025 (5 yrs 10 mos)
-          </p>
-          <p class="text-secondary mb-0 text-dark">
-            Led end-to-end digital solutions for healthcare and allied businesses.
-            Built SEO-optimized, high-performance WordPress websites using custom
-            themes, ACF, and ACF Blocks following WordPress VIP standards.
-            Developed pixel-perfect responsive UIs from Figma designs.
-            Integrated GA4, HubSpot, and analytics tools for performance tracking.
-            Planned and optimized digital marketing campaigns to drive traffic,
-            conversions, and measurable business growth. Leveraged AI tools to
-            improve development speed and efficiency.
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        
+        <!-- New 2026 Role Added Here -->
+        <div class="custom-card mb-4">
+          <div class="d-flex justify-content-between align-items-start flex-wrap">
+            <div>
+              <h5 class="mb-1">WordPress Developer</h5>
+              <p class="accent-text mb-2">Secure Apostille Services</p>
+            </div>
+            <span class="badge bg-accent mb-2">Feb 2026 – Present</span>
+          </div>
+          <p class="text-muted mb-0">
+            Currently leading WordPress development initiatives, focusing on building secure, high-performance web solutions and maintaining robust site architectures to ensure optimal user experiences and data integrity.
           </p>
         </div>
-      </div>
 
-      <!-- Experience 2 -->
-      <div class="col-12">
-        <div class="service-card">
-          <h5 class="fw-semibold mb-1">Full Stack Developer (Internship)</h5>
-          <p class="text-muted small mb-2">
-            Cognifyz Technologies · Internship  
-            <br>Oct 2025 – Nov 2025 (2 months)
-          </p>
-          <p class="text-secondary mb-0 text-dark">
-            Worked on full-stack development tasks including frontend UI
-            implementation and backend logic. Gained hands-on experience
-            in building functional web applications and collaborating in
-            a team-based development environment.
+        <div class="custom-card mb-4">
+          <div class="d-flex justify-content-between align-items-start flex-wrap">
+            <div>
+              <h5 class="mb-1">IT Manager & Lead WordPress Developer</h5>
+              <p class="accent-text mb-2">Medilane HealthTech & Consultancy Services Pvt Ltd</p>
+            </div>
+            <span class="badge bg-secondary mb-2">Jan 2020 – Oct 2025</span>
+          </div>
+          <p class="text-muted mb-0">
+            Led end-to-end web development for healthcare and allied businesses. Built SEO-optimized, high-performance WordPress websites using custom themes, ACF, and ACF Blocks following WordPress VIP standards. Developed pixel-perfect responsive UIs from Figma designs. Managed web infrastructure and utilized AI tools to improve development speed and code quality.
           </p>
         </div>
-      </div>
 
-      <!-- Experience 3 -->
-      <div class="col-12">
-        <div class="service-card">
-          <h5 class="fw-semibold mb-1">Quality Data Analyst</h5>
-          <p class="text-muted small mb-2">
-            RKMTech · Full-time  
-            <br>Jan 2018 – Mar 2019 (1 yr 3 mos)
-          </p>
-          <p class="text-secondary mb-0 text-dark">
-            Ensured accuracy and reliability of insurance data through
-            verification and validation processes. Collaborated with
-            cross-functional teams to streamline data workflows and
-            improve data quality and operational efficiency.
+        <div class="custom-card mb-4">
+          <div class="d-flex justify-content-between align-items-start flex-wrap">
+            <div>
+              <h5 class="mb-1">Full Stack Developer (Internship)</h5>
+              <p class="accent-text mb-2">Cognifyz Technologies</p>
+            </div>
+            <span class="badge bg-secondary mb-2">Oct 2025 – Nov 2025</span>
+          </div>
+          <p class="text-muted mb-0">
+            Worked on full-stack development tasks including frontend UI implementation and backend logic. Gained hands-on experience in building functional web applications and collaborating in a team-based development environment.
           </p>
         </div>
-      </div>
 
-      <!-- Experience 4 -->
-      <div class="col-12">
-        <div class="service-card ">
-          <h5 class="fw-semibold mb-1 ">Business Development Executive</h5>
-          <p class="text-muted small mb-2 ">
-            Simplilearn · Full-time  
-            <br>Mar 2013 – Feb 2014 (1 yr)
-          </p>
-          <p class="text-secondary mb-0  text-dark">
-            Researched and identified potential clients using advanced
-            Google search techniques and data analysis. Verified lead
-            accuracy and delivered qualified prospects to sales teams,
-            supporting improved outreach and conversion efforts.
+        <div class="custom-card mb-4">
+          <div class="d-flex justify-content-between align-items-start flex-wrap">
+            <div>
+              <h5 class="mb-1">Quality Data Analyst</h5>
+              <p class="accent-text mb-2">RKMTech</p>
+            </div>
+            <span class="badge bg-secondary mb-2">Jan 2018 – Mar 2019</span>
+          </div>
+          <p class="text-muted mb-0">
+            Ensured accuracy and reliability of insurance data through rigorous verification and validation processes. Collaborated with cross-functional teams to streamline data workflows and improve operational efficiency.
           </p>
         </div>
-      </div>
 
+        <div class="custom-card">
+          <div class="d-flex justify-content-between align-items-start flex-wrap">
+            <div>
+              <h5 class="mb-1">Business Development Executive</h5>
+              <p class="accent-text mb-2">Simplilearn</p>
+            </div>
+            <span class="badge bg-secondary mb-2">Mar 2013 – Feb 2014</span>
+          </div>
+          <p class="text-muted mb-0">
+            Researched and identified potential clients using advanced search techniques and data analysis. Verified lead accuracy and delivered qualified prospects to sales teams, supporting improved outreach efforts.
+          </p>
+        </div>
+
+      </div>
     </div>
   </div>
 </section>
-<!--info-->
-<section class="py-5" id="008">
-  <div class="container">
 
-    <!-- Section heading -->
-     
-    <section class="py-5">
+<!-- About Section -->
+<section class="py-5" id="about">
   <div class="container">
-
-    <div class="text-center mb-5">
-      <h2 class="fw-bold text-dark">About Me</h2>
-      <p class="text-dark">Web Development & Digital Marketing</p>
+    <div class="section-header">
+      <h2>About Me</h2>
     </div>
-
     <div class="row justify-content-center">
       <div class="col-lg-9">
-
-        <div class="service-card">
-          <p class="text-dark mb-3">
-            I am a results-driven <strong>Web Developer and Digital Marketer</strong>
-            with strong experience in building responsive, performance-focused
-            websites using <strong>WordPress</strong> and <strong>Bootstrap</strong>.
-            I specialize in creating clean CMS architectures, custom themes,
-            and user-friendly interfaces that work seamlessly across devices.
+        <div class="custom-card text-center p-5">
+          <p class="text-muted mb-4 fs-5">
+            I am a results-driven <strong class="text-light">WordPress Developer</strong> with extensive experience in building responsive, performance-focused websites. I specialize in creating clean CMS architectures, custom themes, and user-friendly interfaces that work seamlessly across all devices.
           </p>
-
-          <p class="text-dark mb-3">
-            Alongside development, I actively work on
-            <strong>Google Ads and Meta Ads campaigns</strong>, helping businesses
-            improve visibility, generate quality leads, and optimize conversions
-            through data-driven strategies and analytics insights.
+          <p class="text-muted mb-4 fs-5">
+            My approach combines clean, maintainable code with a deep understanding of the WordPress ecosystem. I focus on bridging the gap between design and functionality, ensuring every site I build is fast, secure, and scalable.
           </p>
-
-          <p class="text-dark mb-0">
-            With a solid foundation in <strong>HTML, CSS, JavaScript</strong>, and
-            analytics tools like <strong>GA4</strong>, I focus on bridging the gap
-            between development and marketing. I am continuously enhancing my
-            full-stack capabilities and am open to opportunities where I can
-            contribute, grow, and deliver measurable digital impact.
+          <p class="text-muted mb-0 fs-5">
+            I am continuously enhancing my full-stack capabilities and am open to opportunities where I can contribute, grow, and deliver measurable digital impact.
           </p>
         </div>
-
       </div>
     </div>
-
   </div>
 </section>
 
-
-
-
-<!-- CTA-->
-
-<section class="py-5">
+<!-- CTA Section -->
+<section class="py-5 mb-5">
   <div class="container">
-    <div class="service-card text-center">
-
-      <h2 class="fw-bold mb-3">Let’s Work Together</h2>
-      <p class="text-muted mb-4">
-        Interested in working together or discussing a project?  
-        I’m open to freelance, full-time, and contract opportunities.
+    <div class="custom-card text-center py-5" style="border-color: var(--accent);">
+      <h2 class="mb-3">Let’s Build Something Great</h2>
+      <p class="text-muted mb-4 mx-auto" style="max-width: 600px;">
+        Interested in working together or discussing a project? I’m open to freelance, full-time, and contract opportunities.
       </p>
-
       <div class="d-flex justify-content-center flex-wrap gap-3">
-        <a href="mailto:achomsingh009@gmail.com"
-           class="btn btn-dark px-4">
-          Email Me
-        </a>
-
-        <a href="./assests/DheerajAchomResume.pdf"
-           target="_blank"
-           class="btn btn-outline-dark px-4">
-          View Resume
-        </a>
-
-        <a href="./assests/DheerajAchomResume.pdf"
-           download
-           class="btn btn-outline-secondary px-4">
-          Download CV
-        </a>
+        <a href="mailto:achomsingh009@gmail.com" class="btn-custom text-decoration-none">Email Me</a>
+        <a href="./assests/DheerajAchomResume.pdf" target="_blank" class="btn-outline-custom text-decoration-none">View Resume</a>
       </div>
-
     </div>
   </div>
 </section>
 
-<footer class="py-4 footer-custom">
+<!-- Footer -->
+<footer class="footer-custom">
   <div class="container text-center">
-
-    <div class="mb-2">
-      <a href="mailto:achomsingh009@gmail.com" class="footer-link me-3">Email</a>
-      <a href="https://github.com/DirasITO" target="_blank" class="footer-link me-3">GitHub</a>
-      <a href="https://www.linkedin.com/in/dheeraj-achom-81199138a/" target="_blank" class="footer-link">LinkedIn</a>
+    <div class="mb-3">
+      <a href="mailto:achomsingh009@gmail.com" class="footer-link mx-3">Email</a>
+      <a href="https://github.com/DirasITO" target="_blank" class="footer-link mx-3">GitHub</a>
+      <a href="https://www.linkedin.com/in/dheeraj-achom-81199138a/" target="_blank" class="footer-link mx-3">LinkedIn</a>
     </div>
-
-    <!-- Visitor counter -->
- <div class="footer-text mt-2">
-  Visitors: <span id="visitorCount">0</span>
-</div>
-
-    <small class="footer-text d-block mt-1">
+    <div class="text-muted small mb-2">
+      Visitors: <span id="visitorCount" class="accent-text fw-bold">0</span>
+    </div>
+    <small class="text-muted">
       © 2026 Dheeraj Achom. All rights reserved.
     </small>
-
   </div>
 </footer>
 
-
-
-<!-- Scroll progress bar -->
-<div id="scroll-progress"></div>
-
 <!-- Scroll to top button -->
-<button id="scrollTopBtn" aria-label="Scroll to top">
-  ↑
-</button>
+<button id="scrollTopBtn" aria-label="Scroll to top">↑</button>
 
-
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<script src="./script.js"></script>
+
 <script>
+// Visitor Counter
 fetch('https://api.countapi.xyz/hit/dirasito.github.io/my-portfolio')
   .then(res => res.json())
   .then(data => {
@@ -605,8 +608,51 @@ fetch('https://api.countapi.xyz/hit/dirasito.github.io/my-portfolio')
   .catch(() => {
     document.getElementById('visitorCount').innerText = '—';
   });
-</script>
 
+// Scroll progress & Top button
+const progressBar = document.getElementById('scroll-progress');
+const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+window.onscroll = function() {
+    // Progress bar
+    let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    let scrolled = (winScroll / height) * 100;
+    progressBar.style.width = scrolled + "%";
+
+    // Top button
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        scrollTopBtn.style.display = "block";
+    } else {
+        scrollTopBtn.style.display = "none";
+    }
+};
+
+scrollTopBtn.onclick = function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// Navbar active link highlighting
+const sections = document.querySelectorAll("section, header");
+const navLinks = document.querySelectorAll(".nav-link");
+
+window.addEventListener("scroll", () => {
+    let current = "";
+    sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 100) {
+            current = section.getAttribute("id");
+        }
+    });
+
+    navLinks.forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("href").includes(current)) {
+            link.classList.add("active");
+        }
+    });
+});
+</script>
 
 </body>
 </html>
